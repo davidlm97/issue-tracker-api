@@ -1,17 +1,33 @@
-
-##  Si se necesita instalar alguna libreria hacerlo dentro del contenedor con: `docker exec aveon-api_api_1 npm install ...`
+##  Si se necesita instalar alguna libreria hacerlo dentro del contenedor con: `docker exec issue-tracker-api_api_1 npm install ...`
 ##    - Para que funcione correctamente hay que hacer `docker-compose up --build` por que los paquetes se instalan en el Dockerfile
 version: "3.8"
 services:
+
+  mongo:
+    image: mongo:5.0
+    command: --quiet
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    volumes:
+      - mongodata:/data/db
+
   api:
-    build: "."
-    command: "npm run start-dev"
+    image: node:16.14-alpine
+    restart: always
+    user: node
+    working_dir: /usr/src/app
+    command: sh -c "npm install && npm run start-dev"
     ports:
       - "3000:3000"
     volumes:
-      - .:/usr/app
-      - /usr/app/node_modules
+      - .:/usr/src/app
     environment:
       NODE_ENV: ${NODE_ENV}
+    depends_on:
+      - "mongo"
 
-
+volumes:
+  mongodata:
+    external: false

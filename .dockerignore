@@ -8,3 +8,4 @@ docker-compose.yml
 *.md
 LICENSE
 node_modules
+npm-debug.log

@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import dotenv from "dotenv";
 import cors from "cors";
+// import mongoose from "mongoose";
 
 // initialize configuration
 dotenv.config();
@@ -27,3 +28,5 @@ const port: number = parseInt(process.env.PORT) || 3000;
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
+
+// mongoose.connect('mongodb://localhost:27017/test');
