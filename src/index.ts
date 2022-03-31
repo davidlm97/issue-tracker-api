@@ -2,6 +2,8 @@ import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import createServer from "./app";
+import { checkEnvVars } from "./utils";
+import { requiredEnvVars } from "./config";
 
 // initialize env vars
 dotenv.config();
@@ -10,6 +12,12 @@ const app = express();
 
 // set app port
 const port: number = parseInt(process.env.PORT) || 3000;
+
+// Check all compulsory ENV vars are loaded
+const erroredVars = checkEnvVars(requiredEnvVars);
+if (erroredVars.length) {
+  throw Error(`Missing ENV vars: ${erroredVars}`);
+}
 
 // Connect to database. If everything is fine then create routes and start the app
 const mongoURL = `mongodb://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`;

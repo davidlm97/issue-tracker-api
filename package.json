@@ -1,7 +1,7 @@
 {
-  "name": "express-ts-babel-boilerplate",
+  "name": "issue-tracker-api",
   "version": "1.0.0",
-  "description": "Boilerplate for API development with express typescript and babel",
+  "description": "Issue tracker API",
   "main": "src/index.ts",
   "scripts": {
     "type": "tsc --noEmit",
