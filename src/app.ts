@@ -18,4 +18,4 @@ const createServer = (app) => {
   });
 };
 
-export default createServer
+export default createServer;
