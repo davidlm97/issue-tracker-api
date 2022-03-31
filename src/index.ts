@@ -1,32 +1,31 @@
 import express from "express";
-import path from "path";
-import cookieParser from "cookie-parser";
-import morgan from "morgan";
 import dotenv from "dotenv";
-import cors from "cors";
-// import mongoose from "mongoose";
+import mongoose from "mongoose";
+import createServer from "./app";
 
-// initialize configuration
+// initialize env vars
 dotenv.config();
 
 const app = express();
 
-// Enable all cors requests
-app.use(cors());
-app.use(morgan("dev"));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
-
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
-
+// set app port
 const port: number = parseInt(process.env.PORT) || 3000;
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
+// Connect to database. If everything is fine then create routes and start the app
+const mongoURL = `mongodb://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`;
+mongoose
+  .connect(mongoURL)
+  .then(
+    () => {
+      createServer(app);
+      console.log("Database connection established successfully");
 
-// mongoose.connect('mongodb://localhost:27017/test');
+      app.listen(port, () => {
+        console.log(`App listening on port ${port}`);
+      });
+    },
+    function (err) {
+      console.error("Error connecting to database: " + err.stack);
+    }
+  )
+  .catch((err) => console.error(err.stack));

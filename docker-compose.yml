@@ -4,14 +4,20 @@ version: "3.8"
 services:
 
   mongo:
-    image: mongo:5.0
+    image: mongo:5.0.6-focal
     command: --quiet
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
+      MONGO_DB_USER_NAME: ${MONGO_DB_USER_NAME}
+      MONGO_DB_USER_PASSWORD: ${MONGO_DB_USER_PASSWORD}
+    ports:
+      - 27017:27017
     volumes:
       - mongodata:/data/db
+      - ./mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh:ro
 
   api:
     image: node:16.14-alpine
@@ -25,6 +31,11 @@ services:
       - .:/usr/src/app
     environment:
       NODE_ENV: ${NODE_ENV}
+      DB_HOST: ${RESOURCE_DB_HOST}
+      DB_PORT: ${RESOURCE_DB_PORT}
+      DB_NAME: ${RESOURCE_DB_NAME}
+      DB_USER: ${RESOURCE_DB_USER}
+      DB_PASSWORD: ${RESOURCE_DB_PASSWORD}
     depends_on:
       - "mongo"
 
