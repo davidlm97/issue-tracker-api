@@ -2,6 +2,8 @@
 // That means that unused variables in the middleware functions declarations 
 // should be kept in order to make them work as expected. 
 
+// TODO tipado y docs
+
 // Middleware that manage asynchronous errors inside controllers. 
 // Use it by wrapping the controller functions (pass them as parameters)
 export const asyncMiddleware = (callback) => {

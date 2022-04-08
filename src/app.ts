@@ -7,7 +7,8 @@ import cors from "cors";
 import { errorHandler, methodNotAllowedErrorHandler, notFoundErrorHandler } from "./middleware/error_middleware";
 
 // Import controllers
-import resource from "./routes/resource"
+import resource from "./routes/resource";
+import projects from "./routes/projects_resource";
 
 const createServer = (app) => {
   // Enable all cors requests
@@ -20,6 +21,7 @@ const createServer = (app) => {
 
   // Set routes
   app.use("/index", resource, router.all("/", methodNotAllowedErrorHandler));
+  app.use("/projects", projects, router.all("/", methodNotAllowedErrorHandler));
 
   // Middleware error handlers
   app.use(notFoundErrorHandler);

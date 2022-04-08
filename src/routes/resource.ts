@@ -1,5 +1,6 @@
 import express from "express";
 import { asyncMiddleware } from "../middleware/error_middleware";
+
 const router = express.Router();
 
 /* GET home page. */
