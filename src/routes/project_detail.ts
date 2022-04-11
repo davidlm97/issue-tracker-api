@@ -1,5 +1,5 @@
 import express from "express";
-import { pagination, validate } from "../middleware/middleware";
+import { validate } from "../middleware/middleware";
 import { asyncMiddleware } from "../middleware/error_middleware";
 import ProjectModel from "../models/project_model";
 import Joi from "joi";
@@ -38,6 +38,22 @@ router.patch(
       lean: true,
     });
 
+    if (!project) {
+      return res.status(404).json({ errors: [{ msg: "project not found" }] });
+    }
+
+    return res.status(200).json(project);
+  })
+);
+
+// DELETE PROJECT
+router.delete(
+  "/",
+  // Perm validation (in token)
+  asyncMiddleware(async (req, res, next) => {
+    const project = await ProjectModel.findByIdAndDelete(req.params.id_project, req.body);
+    // TODO many delete for issues?
+    
     if (!project) {
       return res.status(404).json({ errors: [{ msg: "project not found" }] });
     }

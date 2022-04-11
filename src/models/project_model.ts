@@ -15,4 +15,5 @@ const projectSchema = new Schema<IProject>({
 
 // Create a model
 const ProjectModel = model<IProject>("Project", projectSchema);
-export default ProjectModel
+
+export default ProjectModel;

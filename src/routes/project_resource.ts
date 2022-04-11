@@ -13,7 +13,6 @@ router.get(
   // Perm validation (in token)
   pagination,
   asyncMiddleware(async (req, res, next) => {
-    console.log("Lo q te salga de la polla");
     const result = await ProjectModel.aggregate([
       // TODO wrapper functions
       { $match: {} },
