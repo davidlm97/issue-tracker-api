@@ -7,7 +7,6 @@ import cors from "cors";
 import { errorHandler, methodNotAllowedErrorHandler, mongoIdErrorHandler, notFoundErrorHandler } from "./middleware/error_middleware";
 
 // Import controllers
-import resource from "./routes/resource";
 import projectsResource from "./routes/project_resource";
 import projectDetail from "./routes/project_detail";
 
@@ -21,7 +20,6 @@ const createServer = (app) => {
   app.use(express.static(path.join(__dirname, "public")));
 
   // Set routes
-  app.use("/index", resource, router.all("/", methodNotAllowedErrorHandler));
   app.use("/projects", projectsResource, router.all("/", methodNotAllowedErrorHandler));
   app.use("/projects/:id_project", projectDetail, router.all("/", methodNotAllowedErrorHandler));
 

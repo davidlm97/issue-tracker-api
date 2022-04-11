@@ -1,7 +1,6 @@
 import { processPagination } from "../utils/index";
 
 // TODO tipado, docs y comentarios
-
 export const pagination = (req, res, next) => {
   const { page, page_size, offset, limit } = processPagination(req.query.page, req.query.count);
 
