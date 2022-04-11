@@ -5,7 +5,6 @@
 import mongoose from "mongoose";
 
 // TODO tipado y docs
-
 // Middleware that manage asynchronous errors inside controllers.
 // Use it by wrapping the controller functions (pass them as parameters)
 export const asyncMiddleware = (callback) => {
