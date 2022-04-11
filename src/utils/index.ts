@@ -14,10 +14,19 @@ export const checkEnvVars = (env_vars) => {
   return errored_vars;
 };
 
-// TODO docs and comments
+// TODO docs and comments and test
 export const processPagination = (page, count) => {
   const page_number = !isNaN(page) && page && parseInt(page) ? parseInt(page) : 1;
   const page_size = !isNaN(count) && count && parseInt(count) ? parseInt(count) : 20;
 
   return { page: page_number, page_size: page_size, offset: (page_number - 1) * page_size, limit: page_size };
+};
+
+// TODO docs and comments and test
+export const computePaginationRes = (page, pageSize, count, items) => {
+
+  const realCount = count ? count : 0; 
+  const totalPages = realCount ? Math.ceil(realCount / pageSize) : 1;
+
+  return { page: page, totalPages: totalPages, totalItems: realCount, items: items };
 };

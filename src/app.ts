@@ -4,11 +4,12 @@ import path from "path";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import cors from "cors";
-import { errorHandler, methodNotAllowedErrorHandler, notFoundErrorHandler } from "./middleware/error_middleware";
+import { errorHandler, methodNotAllowedErrorHandler, mongoIdErrorHandler, notFoundErrorHandler } from "./middleware/error_middleware";
 
 // Import controllers
 import resource from "./routes/resource";
-import projects from "./routes/projects_resource";
+import projectsResource from "./routes/project_resource";
+import projectDetail from "./routes/project_detail";
 
 const createServer = (app) => {
   // Enable all cors requests
@@ -21,10 +22,12 @@ const createServer = (app) => {
 
   // Set routes
   app.use("/index", resource, router.all("/", methodNotAllowedErrorHandler));
-  app.use("/projects", projects, router.all("/", methodNotAllowedErrorHandler));
+  app.use("/projects", projectsResource, router.all("/", methodNotAllowedErrorHandler));
+  app.use("/projects/:id_project", projectDetail, router.all("/", methodNotAllowedErrorHandler));
 
   // Middleware error handlers
   app.use(notFoundErrorHandler);
+  app.use(mongoIdErrorHandler);
   app.use(errorHandler);
 };
 

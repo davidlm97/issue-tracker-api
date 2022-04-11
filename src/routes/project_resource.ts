@@ -3,6 +3,7 @@ import { pagination, validate } from "../middleware/middleware";
 import { asyncMiddleware } from "../middleware/error_middleware";
 import ProjectModel from "../models/project_model";
 import Joi from "joi";
+import { computePaginationRes } from "../utils";
 
 const router = express.Router();
 
@@ -12,6 +13,7 @@ router.get(
   // Perm validation (in token)
   pagination,
   asyncMiddleware(async (req, res, next) => {
+    console.log("Lo q te salga de la polla");
     const result = await ProjectModel.aggregate([
       // TODO wrapper functions
       { $match: {} },
@@ -29,10 +31,7 @@ router.get(
         },
       },
     ]);
-
-    return res
-      .status(200)
-      .json({ page: res.locals.page, totalPages: Math.ceil(result[0].totalItems[0].count / res.locals.page_size), totalItems: result[0].totalItems[0].count, items: result[0].data });
+    return res.status(200).json(computePaginationRes(res.locals.page, res.locals.page_size, result[0].totalItems[0]?.count, result[0].data));
   })
 );
 
@@ -41,6 +40,7 @@ const projectPostValidator = Joi.object({
   description: Joi.string().max(300),
 });
 
+// POST PROJECT
 router.post(
   "/",
   // Perm validation (in token)
