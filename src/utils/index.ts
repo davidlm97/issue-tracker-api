@@ -18,14 +18,13 @@ export const checkEnvVars = (env_vars: string[]) => {
  * Process pagination in order to return elements in pages and in a determinate count
  * @param {number} page number of page that you want in your request
  * @param {number} count number of items you need every page
- * @return {object} Object with the page, the paga_size, offset and the page_size
+ * @return {object} Object with the page, offset (from which element are you going to return) and the page_size (max number)
  */
-// TODO offset and page_size are not the same?
 export const processPagination = (page: number, count: number) => {
   const page_number: number = page ? page : 1;
   const page_size: number = count ? count : 20;
 
-  return { page: page_number, page_size: page_size, offset: (page_number - 1) * page_size, limit: page_size };
+  return { page: page_number, offset: (page_number - 1) * page_size, limit: page_size };
 };
 
 /**

@@ -23,4 +23,5 @@ const issueSchema = new Schema<IIssue>({
 
 // Create a model
 export const IssueModel = model<IIssue>("Issue", issueSchema);
+
 export default IssueModel;

@@ -2,15 +2,15 @@
 // That means that unused variables in the middleware functions declarations
 // should be kept in order to make them work as expected.
 import mongoose from "mongoose";
-
+import { ErrorRequestHandler, RequestHandler, Request, Response, NextFunction } from "express";
 /**
  * Middleware that manage asynchronous errors inside controllers. Use it by wrapping the controller functions (pass them as parameters)
- * @param {Function} env_vars Callback function to return
+ * @param {Function} callback Callback function to return
  * @return {Function} Return the param function
  */
 export const asyncMiddleware = (callback) => {
-  return function (req, res, next) {
-    callback(req, res, next).catch(next);
+  return function (req, res, next): RequestHandler {
+    return callback(req, res, next).catch(next);
   };
 };
 
@@ -21,7 +21,7 @@ export const asyncMiddleware = (callback) => {
  * @param {next} next Function to go to the next middleware
  * @return {object} Return the response with the error in json
  */
-export const methodNotAllowedErrorHandler = (req, res, next) => {
+export const methodNotAllowedErrorHandler: RequestHandler = (req: Request, res: Response, next: NextFunction) => {
   return res.status(405).json({ errors: [{ code: 405, msg: "Method not allowed for the resource specified" }] });
 };
 
@@ -32,7 +32,7 @@ export const methodNotAllowedErrorHandler = (req, res, next) => {
  * @param {next} next Function to go to the next middleware
  * @return {object} Return the response with the error in json
  */
-export const notFoundErrorHandler = (req, res, next) => {
+export const notFoundErrorHandler: RequestHandler = (req: Request, res: Response, next: NextFunction) => {
   return res.status(404).json({ errors: [{ code: 404, msg: "Resource not found" }] });
 };
 
@@ -44,7 +44,7 @@ export const notFoundErrorHandler = (req, res, next) => {
  * @param {next} next Function to go to the next middleware
  * @return {object} Return the response with the error in json
  */
-export const errorHandler = (err, req, res, next) => {
+export const errorHandler: ErrorRequestHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
   if (res.headersSent) {
     return next(err);
   }
@@ -61,7 +61,7 @@ export const errorHandler = (err, req, res, next) => {
  * @param {next} next Function to go to the next middleware
  * @return {object} Return the response with the error in json
  */
-export const mongoIdErrorHandler = (err, req, res, next) => {
+export const mongoIdErrorHandler: ErrorRequestHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
   if (err.kind === "ObjectId" && err instanceof mongoose.Error.CastError && err.path === "_id") {
     return res.status(404).json({ errors: [{ code: 404, msg: "incorrect id format" }] });
   }

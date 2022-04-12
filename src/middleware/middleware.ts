@@ -1,11 +1,16 @@
 import { processPagination } from "../utils/index";
+import { RequestHandler, Request, Response, NextFunction } from "express";
 
-// TODO tipado, docs y comentarios
-export const pagination = (req, res, next) => {
-  const { page, page_size, offset, limit } = processPagination(parseInt(req.query.page), parseInt(req.query.count));
+/**
+// Middleware to process the pagination and save the var we need in the local storage.
+ * @param {object} req Request object
+ * @param {object} res Response object
+ * @param {next} next Function to go to the next middleware
+ */
+export const pagination: RequestHandler = (req: Request, res: Response, next: NextFunction) => {
+  const { page, offset, limit } = processPagination(req.query.page, req.query.count);
 
   res.locals.page = page;
-  res.locals.page_size = page_size;
   res.locals.offset = offset;
   res.locals.limit = limit;
   next();
