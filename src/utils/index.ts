@@ -3,7 +3,7 @@
  * @param {array} env_vars Array of strings with the env variables to check
  * @return {array} Array with the errored env vars that do not pass the check. If the array has any content then there are errors.
  */
-export const checkEnvVars = (env_vars: string[]) => {
+export const checkEnvVars = (env_vars: string[]): string[] => {
   const errored_vars: string[] = [];
   for (const env of env_vars) {
     if (typeof process.env[env] === "undefined" || process.env[env] === "") {

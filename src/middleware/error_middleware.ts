@@ -8,9 +8,13 @@ import { ErrorRequestHandler, RequestHandler, Request, Response, NextFunction } 
  * @param {Function} callback Callback function to return
  * @return {Function} Return the param function
  */
-export const asyncMiddleware = (callback) => {
-  return function (req, res, next): RequestHandler {
-    return callback(req, res, next).catch(next);
+ export const asyncMiddleware = (callback: RequestHandler): RequestHandler => {
+  return (req: Request, res: Response, next: NextFunction) => {
+    try {
+      return callback(req, res, next);
+    } catch (err) {
+      return next(err)
+    }
   };
 };
 
@@ -44,7 +48,7 @@ export const notFoundErrorHandler: RequestHandler = (req: Request, res: Response
  * @param {next} next Function to go to the next middleware
  * @return {object} Return the response with the error in json
  */
-export const errorHandler: ErrorRequestHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
+export const errorHandler: ErrorRequestHandler = (err, req: Request, res: Response, next: NextFunction) => {
   if (res.headersSent) {
     return next(err);
   }
@@ -61,7 +65,7 @@ export const errorHandler: ErrorRequestHandler = (err: any, req: Request, res: R
  * @param {next} next Function to go to the next middleware
  * @return {object} Return the response with the error in json
  */
-export const mongoIdErrorHandler: ErrorRequestHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
+export const mongoIdErrorHandler: ErrorRequestHandler = (err, req: Request, res: Response, next: NextFunction) => {
   if (err.kind === "ObjectId" && err instanceof mongoose.Error.CastError && err.path === "_id") {
     return res.status(404).json({ errors: [{ code: 404, msg: "incorrect id format" }] });
   }

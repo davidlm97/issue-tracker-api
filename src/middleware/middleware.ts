@@ -8,7 +8,7 @@ import { RequestHandler, Request, Response, NextFunction } from "express";
  * @param {next} next Function to go to the next middleware
  */
 export const pagination: RequestHandler = (req: Request, res: Response, next: NextFunction) => {
-  const { page, offset, limit } = processPagination(req.query.page, req.query.count);
+  const { page, offset, limit } = processPagination(parseInt(req.query.page as string), parseInt(req.query.count as string));
 
   res.locals.page = page;
   res.locals.offset = offset;
