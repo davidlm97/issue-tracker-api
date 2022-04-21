@@ -20,7 +20,7 @@ services:
       - ./mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh:ro
 
   api:
-    image: node:16.14-alpine
+    image: node:16.14-stretch # TODO problems with mongodb-memory-server, do a docker with other node contaier smaller and adding packages so we can use memory server
     restart: always
     user: node
     working_dir: /usr/src/app

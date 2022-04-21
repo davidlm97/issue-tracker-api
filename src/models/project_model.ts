@@ -1,5 +1,4 @@
-import mongoose from "mongoose";
-const { Schema, model } = mongoose;
+import { Schema, model } from "mongoose";
 
 // Create a interface representing a document in MongoDB
 interface IProject {
